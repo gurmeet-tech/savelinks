@@ -10,40 +10,83 @@ import { VideoLink } from "@/types/video";
 import { HeartIcon, PlayCircleIcon, DeleteIcon, PlusSquareIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { TextMorph } from "@/components/ui/text-morph";
+import { useToast } from "@/components/ui/toast";
+import { Copy, Pencil, Search, ArrowUpDown } from "lucide-react";
+
+type SortOption = "newest" | "oldest" | "az" | "favorites";
 
 export default function HomePage() {
   const [videos, setVideos] = useState<VideoLink[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [subject, setSubject] = useState("");
   const [chapter, setChapter] = useState("");
   const [description, setDescription] = useState("");
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState<SortOption>("newest");
+  const [activeSubject, setActiveSubject] = useState<string>("all");
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     setVideos(loadVideos());
   }, []);
 
-  const handleAdd = () => {
-    if (!title.trim() || !url.trim()) return;
-    const newVideo: VideoLink = {
-      id: crypto.randomUUID(),
-      title: title.trim(),
-      url: url.trim(),
-      subject: subject.trim() || undefined,
-      chapter: chapter.trim() || undefined,
-      description: description.trim() || undefined,
-      favorite: false,
-      createdAt: Date.now(),
-    };
-    const updated = [newVideo, ...videos];
-    setVideos(updated);
-    saveVideos(updated);
+  const openAdd = () => {
+    setEditingId(null);
     setTitle("");
     setUrl("");
     setSubject("");
     setChapter("");
     setDescription("");
+    setShowModal(true);
+  };
+
+  const openEdit = (video: VideoLink) => {
+    setEditingId(video.id);
+    setTitle(video.title);
+    setUrl(video.url);
+    setSubject(video.subject || "");
+    setChapter(video.chapter || "");
+    setDescription(video.description || "");
+    setShowModal(true);
+  };
+
+  const handleSave = () => {
+    if (!title.trim() || !url.trim()) return;
+    if (editingId) {
+      const updated = videos.map((v) =>
+        v.id === editingId
+          ? { ...v, title: title.trim(), url: url.trim(), subject: subject.trim() || undefined, chapter: chapter.trim() || undefined, description: description.trim() || undefined }
+          : v
+      );
+      setVideos(updated);
+      saveVideos(updated);
+      toast("Updated");
+    } else {
+      const newVideo: VideoLink = {
+        id: crypto.randomUUID(),
+        title: title.trim(),
+        url: url.trim(),
+        subject: subject.trim() || undefined,
+        chapter: chapter.trim() || undefined,
+        description: description.trim() || undefined,
+        favorite: false,
+        createdAt: Date.now(),
+      };
+      const updated = [newVideo, ...videos];
+      setVideos(updated);
+      saveVideos(updated);
+      toast("Added");
+    }
+    setTitle("");
+    setUrl("");
+    setSubject("");
+    setChapter("");
+    setDescription("");
+    setEditingId(null);
     setShowModal(false);
   };
 
@@ -53,15 +96,44 @@ export default function HomePage() {
     saveVideos(updated);
   };
 
-  const deleteVideo = (id: string) => {
-    const updated = videos.filter((v) => v.id !== id);
+  const confirmDelete = () => {
+    if (!deleteId) return;
+    const updated = videos.filter((v) => v.id !== deleteId);
     setVideos(updated);
     saveVideos(updated);
+    toast("Deleted");
+    setDeleteId(null);
   };
+
+  const copyLink = async (url: string) => {
+    try {
+      await navigator.clipboard.writeText(url);
+      toast("Copied");
+    } catch {
+      toast("Copy failed");
+    }
+  };
+
+  const subjects = Array.from(new Set(videos.map((v) => v.subject).filter(Boolean))) as string[];
+
+  let filtered = videos.filter((v) => {
+    const q = search.toLowerCase();
+    const matchesSearch = !q || v.title.toLowerCase().includes(q) || v.subject?.toLowerCase().includes(q) || v.chapter?.toLowerCase().includes(q) || v.description?.toLowerCase().includes(q);
+    const matchesSubject = activeSubject === "all" || v.subject === activeSubject;
+    return matchesSearch && matchesSubject;
+  });
+
+  filtered = [...filtered].sort((a, b) => {
+    if (sort === "newest") return b.createdAt - a.createdAt;
+    if (sort === "oldest") return a.createdAt - b.createdAt;
+    if (sort === "az") return a.title.localeCompare(b.title);
+    if (sort === "favorites") return (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0);
+    return 0;
+  });
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar onAddClick={() => setShowModal(true)} />
+      <Navbar onAddClick={openAdd} />
       <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
         <div className="mx-auto max-w-6xl">
           <div className="mb-6 sm:mb-8 animate-fade-slide-up">
@@ -73,7 +145,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <Card className="mb-8 bg-neutral border-border hover-lift animate-fade-slide-up" style={{ animationDelay: "80ms" }}>
+          <Card className="mb-6 bg-neutral border-border hover-lift animate-fade-slide-up" style={{ animationDelay: "80ms" }}>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <h2 className="text-[17px] sm:text-[19px] font-medium leading-[1.2] text-on-surface">
@@ -84,7 +156,7 @@ export default function HomePage() {
                 </p>
               </div>
               <button
-                onClick={() => setShowModal(true)}
+                onClick={openAdd}
                 className="relative overflow-hidden inline-flex items-center justify-center gap-1.5 h-9 px-4 rounded-lg text-[14px] font-medium text-surface bg-[linear-gradient(180deg,#5A92FF_0%,#3F80FF_100%)] border border-[#2F67E6] shadow-[inset_0_1px_0_rgba(255,255,255,0.22),inset_0_-1px_0_rgba(47,103,230,0.4),0_1px_1px_rgba(63,128,255,0.16)] hover:bg-[linear-gradient(180deg,#6A9AFF_0%,#4F87FF_100%)] transition-all duration-150 active:scale-[0.98] w-full sm:w-auto"
               >
                 <PlusSquareIcon className="h-3.5 w-3.5" />
@@ -93,26 +165,79 @@ export default function HomePage() {
             </div>
           </Card>
 
-          <div className="mb-4 animate-fade-slide-up" style={{ animationDelay: "140ms" }}>
+          <Card className="mb-6 bg-neutral border-border animate-fade-slide-up" style={{ animationDelay: "120ms" }}>
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <div className="relative flex-1">
+                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted" />
+                  <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by title, subject, chapter, notes" className="pl-8" />
+                </div>
+                <div className="relative">
+                  <ArrowUpDown className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted" />
+                  <select
+                    value={sort}
+                    onChange={(e) => setSort(e.target.value as SortOption)}
+                    className="h-[32px] pl-8 pr-3 rounded-lg border border-border bg-surface text-[13px] text-on-surface"
+                  >
+                    <option value="newest">Newest first</option>
+                    <option value="oldest">Oldest first</option>
+                    <option value="az">A-Z</option>
+                    <option value="favorites">Favorites first</option>
+                  </select>
+                </div>
+              </div>
+              {subjects.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setActiveSubject("all")}
+                    className={cn(
+                      "h-7 px-3 rounded-full text-[12px] font-medium border transition-all duration-150",
+                      activeSubject === "all"
+                        ? "bg-primary text-surface border-primary"
+                        : "bg-surface text-on-surface border-border hover:bg-neutral"
+                    )}
+                  >
+                    All
+                  </button>
+                  {subjects.map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => setActiveSubject(s)}
+                      className={cn(
+                        "h-7 px-3 rounded-full text-[12px] font-medium border transition-all duration-150",
+                        activeSubject === s
+                          ? "bg-primary text-surface border-primary"
+                          : "bg-surface text-on-surface border-border hover:bg-neutral"
+                      )}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Card>
+
+          <div className="mb-4 animate-fade-slide-up" style={{ animationDelay: "160ms" }}>
             <h2 className="text-[17px] sm:text-[19px] font-medium leading-[1.2] text-on-surface">
               <TextMorph texts={["Saved Video Links", "Your Collection", "Prep Links"]} />
             </h2>
             <p className="text-[13px] sm:text-[14px] text-muted mt-1">
-              All your saved videos
+              {filtered.length} {filtered.length === 1 ? "video" : "videos"}
             </p>
           </div>
 
-          {videos.length === 0 ? (
+          {filtered.length === 0 ? (
             <Card className="text-center py-10 sm:py-12 bg-neutral animate-fade-slide-up" style={{ animationDelay: "200ms" }}>
-              <p className="text-[14px] text-muted">No videos saved yet</p>
-              <Button variant="primary" className="mt-4" onClick={() => setShowModal(true)}>
-                Add your first video
+              <p className="text-[14px] text-muted">No videos found</p>
+              <Button variant="primary" className="mt-4" onClick={openAdd}>
+                Add video
               </Button>
             </Card>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-              {videos.map((video, idx) => (
-                <Card key={video.id} className="flex flex-col gap-3 bg-neutral border-border hover-lift card-entrance" style={{ animationDelay: `${200 + idx * 40}ms` }}>
+              {filtered.map((video, idx) => (
+                <Card key={video.id} className="flex flex-col gap-3 bg-neutral border-border hover-lift card-entrance" style={{ animationDelay: `${200 + idx * 35}ms` }}>
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-[17px] sm:text-[19px] font-medium leading-[1.2] text-on-surface line-clamp-2">
@@ -139,6 +264,17 @@ export default function HomePage() {
                   {video.description && (
                     <p className="text-[13px] sm:text-[14px] text-muted line-clamp-2">{video.description}</p>
                   )}
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <button onClick={() => copyLink(video.url)} className="relative overflow-hidden inline-flex items-center gap-1 h-7 px-2 rounded-md text-[12px] font-medium text-on-surface hover:bg-surface/60 transition-all duration-150 active:scale-[0.98]">
+                      <Copy className="h-3 w-3" /> Copy
+                    </button>
+                    <button onClick={() => openEdit(video)} className="relative overflow-hidden inline-flex items-center gap-1 h-7 px-2 rounded-md text-[12px] font-medium text-on-surface hover:bg-surface/60 transition-all duration-150 active:scale-[0.98]">
+                      <Pencil className="h-3 w-3" /> Edit
+                    </button>
+                    <button onClick={() => setDeleteId(video.id)} className="relative overflow-hidden inline-flex items-center gap-1 h-7 px-2 rounded-md text-[12px] font-medium text-muted hover:text-error hover:bg-surface/60 transition-all duration-150 active:scale-[0.98]">
+                      <DeleteIcon className="h-3 w-3" /> Delete
+                    </button>
+                  </div>
                   <div className="flex items-center gap-2 mt-auto">
                     <a
                       href={video.url}
@@ -149,12 +285,6 @@ export default function HomePage() {
                       <PlayCircleIcon className="h-3.5 w-3.5" />
                       Open in Browser
                     </a>
-                    <button
-                      onClick={() => deleteVideo(video.id)}
-                      className="relative overflow-hidden p-2 rounded-lg hover:bg-surface/60 transition-all duration-150 active:scale-90"
-                    >
-                      <DeleteIcon className="h-3.5 w-3.5 text-muted" />
-                    </button>
                   </div>
                 </Card>
               ))}
@@ -167,7 +297,7 @@ export default function HomePage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
           <div className="absolute inset-0 bg-black/20 animate-fade-slide-up" onClick={() => setShowModal(false)} />
           <Card className="relative w-full max-w-md p-5 sm:p-6 bg-surface shadow-lg max-h-[90vh] overflow-y-auto animate-scale-in">
-            <h2 className="text-[18px] sm:text-[20px] font-medium mb-4">Add Video Link</h2>
+            <h2 className="text-[18px] sm:text-[20px] font-medium mb-4">{editingId ? "Edit Video" : "Add Video Link"}</h2>
             <div className="space-y-3">
               <div>
                 <label className="text-[12px] font-medium text-on-surface mb-1 block">Heading *</label>
@@ -193,12 +323,26 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex items-center gap-2 mt-6">
-              <Button variant="primary" onClick={handleAdd} className="flex-1">
-                Save
+              <Button variant="primary" onClick={handleSave} className="flex-1">
+                {editingId ? "Update" : "Save"}
               </Button>
               <Button variant="secondary" onClick={() => setShowModal(false)} className="flex-1">
                 Cancel
               </Button>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {deleteId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <div className="absolute inset-0 bg-black/20 animate-fade-slide-up" onClick={() => setDeleteId(null)} />
+          <Card className="relative w-full max-w-sm p-5 bg-surface shadow-lg animate-scale-in">
+            <h2 className="text-[18px] font-medium mb-2">Delete this video?</h2>
+            <p className="text-[13px] text-muted">This action cannot be undone.</p>
+            <div className="flex items-center gap-2 mt-5">
+              <button onClick={confirmDelete} className="flex-1 h-9 rounded-lg text-[14px] font-medium text-surface bg-[linear-gradient(180deg,#EF4444_0%,#DC2626_100%)] border border-[#B91C1C]">Delete</button>
+              <Button variant="secondary" onClick={() => setDeleteId(null)} className="flex-1">Cancel</Button>
             </div>
           </Card>
         </div>
