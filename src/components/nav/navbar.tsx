@@ -25,14 +25,14 @@ export function Navbar({ onAddClick }: NavbarProps) {
           <div className="flex items-center gap-2">
             <Link
               href="/favorites"
-              className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[14px] font-medium text-on-surface hover:bg-neutral/60 transition-colors"
+              className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[14px] font-medium text-on-surface bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F7F8_100%)] border border-[#D6D8DC] shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_0_rgba(229,231,235,0.9),0_1px_1px_rgba(16,24,40,0.01)] hover:bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F6F7_100%)] transition-all duration-150"
             >
               <Heart className="h-3.5 w-3.5" />
               Favorites
             </Link>
             <button
               onClick={onAddClick}
-              className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-primary text-surface text-[14px] font-medium hover:bg-[#4F87FF] active:bg-[#2F67E6] shadow-[0_1px_2px_rgba(63,128,255,0.25)] transition-colors"
+              className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[14px] font-medium text-surface bg-[linear-gradient(180deg,#5A92FF_0%,#3F80FF_100%)] border border-[#2F67E6] shadow-[inset_0_1px_0_rgba(255,255,255,0.22),inset_0_-1px_0_rgba(47,103,230,0.4),0_1px_1px_rgba(63,128,255,0.16)] hover:bg-[linear-gradient(180deg,#6A9AFF_0%,#4F87FF_100%)] active:bg-[linear-gradient(180deg,#3F80FF_0%,#2F67E6_100%)] transition-all duration-150"
             >
               <Plus className="h-3.5 w-3.5" />
               Add Video

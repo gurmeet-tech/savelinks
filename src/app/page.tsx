@@ -114,7 +114,7 @@ export default function HomePage() {
                       href={video.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-surface border border-border text-on-surface text-[14px] font-medium hover:bg-neutral transition-colors flex-1 justify-center"
+                      className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[14px] font-medium text-on-surface bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F7F8_100%)] border border-[#D6D8DC] shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_0_rgba(229,231,235,0.9),0_1px_1px_rgba(16,24,40,0.01)] hover:bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F6F7_100%)] transition-all duration-150 flex-1 justify-center"
                     >
                       <ExternalLink className="h-3.5 w-3.5" />
                       Watch
