@@ -9,6 +9,7 @@ import { loadVideos, saveVideos } from "@/lib/storage";
 import { VideoLink } from "@/types/video";
 import { HeartIcon, PlayCircleIcon, DeleteIcon, PlusSquareIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import { TextMorph } from "@/components/ui/text-morph";
 
 export default function HomePage() {
   const [videos, setVideos] = useState<VideoLink[]>([]);
@@ -65,7 +66,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-6 sm:mb-8">
             <h1 className="text-[20px] sm:text-[22px] font-medium leading-[1.15] tracking-[-0.015em] text-on-surface">
-              Video Saver
+              <TextMorph texts={["Video Saver", "PrepVault", "Save Your Links"]} />
             </h1>
             <p className="mt-1 text-[13px] sm:text-[14px] text-muted">
               Save important videos for your Class 12th prep
@@ -94,7 +95,7 @@ export default function HomePage() {
 
           <div className="mb-4">
             <h2 className="text-[17px] sm:text-[19px] font-medium leading-[1.2] text-on-surface">
-              Saved Video Links
+              <TextMorph texts={["Saved Video Links", "Your Collection", "Prep Links"]} />
             </h2>
             <p className="text-[13px] sm:text-[14px] text-muted mt-1">
               All your saved videos
@@ -152,7 +153,7 @@ export default function HomePage() {
                       onClick={() => deleteVideo(video.id)}
                       className="relative overflow-hidden p-2 rounded-lg hover:bg-surface/60 transition-colors"
                     >
-                      <DeleteIcon className="h-3.5 w-3.5 text-muted" />
+                      <DeleteIcon class className="h-3.5 w-3.5 text-muted" />
                     </button>
                   </div>
                 </Card>
