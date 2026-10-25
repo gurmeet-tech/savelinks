@@ -14,25 +14,25 @@ export function Navbar({ onAddClick }: NavbarProps) {
       <div className="mx-auto max-w-6xl px-6">
         <nav
           className={cn(
-            "mt-3 flex items-center justify-between gap-4 rounded-[10px] border border-border/60 px-4 h-12",
-            "bg-[rgba(247,247,248,0.8)] backdrop-blur-xl backdrop-saturate-150"
+            "mt-3 flex items-center justify-between gap-4 h-12 px-4 rounded-[10px] border border-border/70",
+            "bg-[rgba(255,255,255,0.8)] backdrop-blur-xl backdrop-saturate-150 shadow-[0_1px_1px_rgba(0,0,0,0.01)]"
           )}
         >
           <Link href="/" className="flex items-center gap-2">
             <Video className="h-4 w-4 text-on-surface" />
-            <span className="text-[17px] font-medium leading-5 text-on-surface">PrepVault</span>
+            <span className="text-[19px] font-medium leading-[1.2] text-on-surface">PrepVault</span>
           </Link>
           <div className="flex items-center gap-2">
             <Link
               href="/favorites"
-              className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[13px] font-medium text-on-surface hover:bg-black/[0.02] transition-colors"
+              className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[14px] font-medium text-on-surface hover:bg-neutral/60 transition-colors"
             >
               <Heart className="h-3.5 w-3.5" />
               Favorites
             </Link>
             <button
               onClick={onAddClick}
-              className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-primary text-primary-contrast text-[13px] font-medium shadow-button-primary hover:brightness-[1.02]"
+              className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-primary text-surface text-[14px] font-medium hover:bg-[#4F87FF] active:bg-[#2F67E6] shadow-[0_1px_2px_rgba(63,128,255,0.25)] transition-colors"
             >
               <Plus className="h-3.5 w-3.5" />
               Add Video

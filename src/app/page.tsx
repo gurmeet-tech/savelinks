@@ -64,7 +64,7 @@ export default function HomePage() {
       <main className="pt-24 pb-16 px-6">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8">
-            <h1 className="text-[22px] font-medium leading-[25.3px] tracking-[-0.33px] text-on-surface">
+            <h1 className="text-[22px] font-medium leading-[1.15] tracking-[-0.015em] text-on-surface">
               Saved Videos
             </h1>
             <p className="mt-1 text-[14px] text-muted">
@@ -73,8 +73,8 @@ export default function HomePage() {
           </div>
 
           {videos.length === 0 ? (
-            <Card className="text-center py-12">
-              <p className="text-[15px] text-muted">No videos saved yet</p>
+            <Card className="text-center py-12 bg-neutral">
+              <p className="text-[14px] text-muted">No videos saved yet</p>
               <Button variant="primary" className="mt-4" onClick={() => setShowModal(true)}>
                 Add your first video
               </Button>
@@ -82,10 +82,10 @@ export default function HomePage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {videos.map((video) => (
-                <Card key={video.id} className="flex flex-col gap-3 hover:border-muted/60 transition-colors">
+                <Card key={video.id} className="flex flex-col gap-3 bg-neutral border-border">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-[17px] font-medium leading-5 text-on-surface line-clamp-2">
+                      <h3 className="text-[19px] font-medium leading-[1.2] text-on-surface line-clamp-2">
                         {video.title}
                       </h3>
                       {(video.subject || video.chapter) && (
@@ -96,7 +96,7 @@ export default function HomePage() {
                     </div>
                     <button
                       onClick={() => toggleFavorite(video.id)}
-                      className="relative overflow-hidden p-1.5 rounded-lg hover:bg-neutral transition-colors"
+                      className="relative overflow-hidden p-1.5 rounded-lg hover:bg-surface/60 transition-colors"
                     >
                       <Heart
                         className={cn(
@@ -107,21 +107,21 @@ export default function HomePage() {
                     </button>
                   </div>
                   {video.description && (
-                    <p className="text-[13px] text-muted line-clamp-2">{video.description}</p>
+                    <p className="text-[14px] text-muted line-clamp-2">{video.description}</p>
                   )}
                   <div className="flex items-center gap-2 mt-auto">
                     <a
                       href={video.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-neutral text-on-surface text-[13px] font-medium hover:bg-tertiary transition-colors flex-1 justify-center"
+                      className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-surface border border-border text-on-surface text-[14px] font-medium hover:bg-neutral transition-colors flex-1 justify-center"
                     >
                       <ExternalLink className="h-3.5 w-3.5" />
                       Watch
                     </a>
                     <button
                       onClick={() => deleteVideo(video.id)}
-                      className="relative overflow-hidden p-2 rounded-lg hover:bg-neutral transition-colors"
+                      className="relative overflow-hidden p-2 rounded-lg hover:bg-surface/60 transition-colors"
                     >
                       <Trash2 className="h-3.5 w-3.5 text-muted" />
                     </button>
@@ -136,8 +136,8 @@ export default function HomePage() {
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
           <div className="absolute inset-0 bg-black/20" onClick={() => setShowModal(false)} />
-          <Card className="relative w-full max-w-md p-6 shadow-lg">
-            <h2 className="text-[19px] font-medium mb-4">Add Video Link</h2>
+          <Card className="relative w-full max-w-md p-6 bg-surface shadow-lg">
+            <h2 className="text-[20px] font-medium mb-4">Add Video Link</h2>
             <div className="space-y-3">
               <div>
                 <label className="text-[12px] font-medium text-on-surface mb-1 block">Heading *</label>
