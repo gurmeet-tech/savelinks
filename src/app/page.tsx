@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loadVideos, saveVideos } from "@/lib/storage";
 import { VideoLink } from "@/types/video";
-import { HeartIcon, PlayCircleIcon, DeleteIcon } from "@/components/icons";
+import { HeartIcon, PlayCircleIcon, DeleteIcon, PlusSquareIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
@@ -65,10 +65,39 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-6 sm:mb-8">
             <h1 className="text-[20px] sm:text-[22px] font-medium leading-[1.15] tracking-[-0.015em] text-on-surface">
-              Saved Videos
+              Video Saver
             </h1>
             <p className="mt-1 text-[13px] sm:text-[14px] text-muted">
-              Save links for your Class 12th prep
+              Save important videos for your Class 12th prep
+            </p>
+          </div>
+
+          <Card className="mb-8 bg-neutral border-border">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <h2 className="text-[17px] sm:text-[19px] font-medium leading-[1.2] text-on-surface">
+                  Add New Video
+                </h2>
+                <p className="text-[13px] sm:text-[14px] text-muted mt-1">
+                  Add heading and link. You can add subject/chapter/notes too.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowModal(true)}
+                className="relative overflow-hidden inline-flex items-center justify-center gap-1.5 h-9 px-4 rounded-lg text-[14px] font-medium text-surface bg-[linear-gradient(180deg,#5A92FF_0%,#3F80FF_100%)] border border-[#2F67E6] shadow-[inset_0_1px_0_rgba(255,255,255,0.22),inset_0_-1px_0_rgba(47,103,230,0.4),0_1px_1px_rgba(63,128,255,0.16)] hover:bg-[linear-gradient(180deg,#6A9AFF_0%,#4F87FF_100%)] transition-all duration-150 w-full sm:w-auto"
+              >
+                <PlusSquareIcon className="h-3.5 w-3.5" />
+                Add Video Link
+              </button>
+            </div>
+          </Card>
+
+          <div className="mb-4">
+            <h2 className="text-[17px] sm:text-[19px] font-medium leading-[1.2] text-on-surface">
+              Saved Video Links
+            </h2>
+            <p className="text-[13px] sm:text-[14px] text-muted mt-1">
+              All your saved videos
             </p>
           </div>
 
@@ -117,7 +146,7 @@ export default function HomePage() {
                       className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[13px] sm:text-[14px] font-medium text-on-surface bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F7F8_100%)] border border-[#D6D8DC] shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_0_rgba(229,231,235,0.9),0_1px_1px_rgba(16,24,40,0.01)] hover:bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F6F7_100%)] transition-all duration-150 flex-1 justify-center"
                     >
                       <PlayCircleIcon className="h-3.5 w-3.5" />
-                      Watch
+                      Open in Browser
                     </a>
                     <button
                       onClick={() => deleteVideo(video.id)}

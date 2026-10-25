@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { HeartIcon, PlusSquareIcon, YoutubeIcon } from "@/components/icons";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home } from "lucide-react";
 
 interface NavbarProps {
   onAddClick?: () => void;
@@ -21,6 +21,13 @@ export function Navbar({ onAddClick }: NavbarProps) {
             <span className="text-[17px] sm:text-[19px] font-medium leading-[1.2] text-on-surface truncate">PrepVault</span>
           </Link>
           <div className="hidden sm:flex items-center gap-2">
+            <Link
+              href="/"
+              className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[14px] font-medium text-on-surface bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F7F8_100%)] border border-[#D6D8DC] shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_0_rgba(229,231,235,0.9),0_1px_1px_rgba(16,24,40,0.01)] hover:bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F6F7_100%)] transition-all duration-150"
+            >
+              <Home className="h-3.5 w-3.5" />
+              Home
+            </Link>
             <Link
               href="/favorites"
               className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[14px] font-medium text-on-surface bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F7F8_100%)] border border-[#D6D8DC] shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_0_rgba(229,231,235,0.9),0_1px_1px_rgba(16,24,40,0.01)] hover:bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F6F7_100%)] transition-all duration-150"
@@ -45,6 +52,14 @@ export function Navbar({ onAddClick }: NavbarProps) {
         </nav>
         {open && (
           <div className="sm:hidden mt-2 rounded-[10px] border border-border/70 bg-[rgba(255,255,255,0.95)] backdrop-blur-xl p-2 flex flex-col gap-1">
+            <Link
+              href="/"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 px-3 h-9 rounded-lg text-[14px] font-medium text-on-surface hover:bg-neutral/70"
+            >
+              <Home className="h-3.5 w-3.5" />
+              Home
+            </Link>
             <Link
               href="/favorites"
               onClick={() => setOpen(false)}
