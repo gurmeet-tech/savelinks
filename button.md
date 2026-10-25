@@ -1,0 +1,3 @@
+this is the .md file to let the agent use for the buttons strictly for the buttons that are gonna use for the website the buttons should be containng maily some low font weight and if click then grid click animation it shuold be minimal and 30 opacity that like million dollar websites have animations the website shuld have that circle stroke animation with it filled with the grids something like this and the design system of the buttons are given below::
+
+use the design.md tokens. Keep text weight ~500 or lower where appropriate. On click add a subtle grid-fill/circle-stroke ripple animation (minimal, ~30% opacity). Follow compact sizing from design system.
