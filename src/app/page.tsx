@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loadVideos, saveVideos } from "@/lib/storage";
 import { VideoLink } from "@/types/video";
-import { Heart, ExternalLink, Trash2 } from "lucide-react";
+import { HeartIcon, PlayCircleIcon, DeleteIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
@@ -98,7 +98,7 @@ export default function HomePage() {
                       onClick={() => toggleFavorite(video.id)}
                       className="relative overflow-hidden p-1.5 rounded-lg hover:bg-surface/60 transition-colors"
                     >
-                      <Heart
+                      <HeartIcon
                         className={cn(
                           "h-4 w-4",
                           video.favorite ? "fill-primary text-primary" : "text-muted"
@@ -116,14 +116,14 @@ export default function HomePage() {
                       rel="noopener noreferrer"
                       className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[14px] font-medium text-on-surface bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F7F8_100%)] border border-[#D6D8DC] shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_0_rgba(229,231,235,0.9),0_1px_1px_rgba(16,24,40,0.01)] hover:bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F6F7_100%)] transition-all duration-150 flex-1 justify-center"
                     >
-                      <ExternalLink className="h-3.5 w-3.5" />
+                      <PlayCircleIcon className="h-3.5 w-3.5" />
                       Watch
                     </a>
                     <button
                       onClick={() => deleteVideo(video.id)}
                       className="relative overflow-hidden p-2 rounded-lg hover:bg-surface/60 transition-colors"
                     >
-                      <Trash2 className="h-3.5 w-3.5 text-muted" />
+                      <DeleteIcon className="h-3.5 w-3.5 text-muted" />
                     </button>
                   </div>
                 </Card>
