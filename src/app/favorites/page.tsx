@@ -35,19 +35,19 @@ export default function FavoritesPage() {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      <main className="pt-24 pb-16 px-6">
+      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8">
-            <h1 className="text-[22px] font-medium leading-[1.15] tracking-[-0.015em] text-on-surface">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-[20px] sm:text-[22px] font-medium leading-[1.15] tracking-[-0.015em] text-on-surface">
               Favorites
             </h1>
-            <p className="mt-1 text-[14px] text-muted">
+            <p className="mt-1 text-[13px] sm:text-[14px] text-muted">
               Your starred videos
             </p>
           </div>
 
           {videos.length === 0 ? (
-            <Card className="text-center py-12 bg-neutral">
+            <Card className="text-center py-10 sm:py-12 bg-neutral">
               <p className="text-[14px] text-muted">No favorites yet</p>
               <Link href="/">
                 <Button variant="secondary" className="mt-4">
@@ -56,16 +56,16 @@ export default function FavoritesPage() {
               </Link>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {videos.map((video) => (
                 <Card key={video.id} className="flex flex-col gap-3 bg-neutral border-border">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-[19px] font-medium leading-[1.2] text-on-surface line-clamp-2">
+                      <h3 className="text-[17px] sm:text-[19px] font-medium leading-[1.2] text-on-surface line-clamp-2">
                         {video.title}
                       </h3>
                       {(video.subject || video.chapter) && (
-                        <p className="mt-1 text-[12px] text-muted">
+                        <p className="mt-1 text-[11px] sm:text-[12px] text-muted">
                           {[video.subject, video.chapter].filter(Boolean).join(" • ")}
                         </p>
                       )}
@@ -78,14 +78,14 @@ export default function FavoritesPage() {
                     </button>
                   </div>
                   {video.description && (
-                    <p className="text-[14px] text-muted line-clamp-2">{video.description}</p>
+                    <p className="text-[13px] sm:text-[14px] text-muted line-clamp-2">{video.description}</p>
                   )}
                   <div className="flex items-center gap-2 mt-auto">
                     <a
                       href={video.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[14px] font-medium text-on-surface bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F7F8_100%)] border border-[#D6D8DC] shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_0_rgba(229,231,235,0.9),0_1px_1px_rgba(16,24,40,0.01)] hover:bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F6F7_100%)] transition-all duration-150 flex-1 justify-center"
+                      className="relative overflow-hidden inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-[13px] sm:text-[14px] font-medium text-on-surface bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F7F8_100%)] border border-[#D6D8DC] shadow-[inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_0_rgba(229,231,235,0.9),0_1px_1px_rgba(16,24,40,0.01)] hover:bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F6F7_100%)] transition-all duration-150 flex-1 justify-center"
                     >
                       <PlayCircleIcon className="h-3.5 w-3.5" />
                       Watch
