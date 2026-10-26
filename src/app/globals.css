@@ -6,6 +6,20 @@
   --bg: #ffffff;
   --nav-bg: rgba(248, 249, 250, 0.8);
   --border: #e5e7eb;
+  --surface: #ffffff;
+  --surface-2: #f7f7f8;
+  --text: #202020;
+  --text-dim: #6b7280;
+}
+
+.dark {
+  --bg: #0e1116;
+  --nav-bg: rgba(23, 27, 34, 0.8);
+  --border: #2a3140;
+  --surface: #171b22;
+  --surface-2: #1f2430;
+  --text: #e8ecf2;
+  --text-dim: #9aa4b2;
 }
 
 * {
@@ -18,8 +32,8 @@ body {
 }
 
 body {
-  background: #ffffff;
-  color: #202020;
+  background: var(--bg);
+  color: var(--text);
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -105,4 +119,8 @@ body {
 .hover-lift:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(16, 24, 40, 0.04);
+}
+
+.dark .hover-lift:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }

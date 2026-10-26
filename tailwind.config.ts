@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -14,11 +15,11 @@ const config: Config = {
         secondary: "#202020",
         tertiary: "#E5E7EB",
         neutral: "#F7F7F8",
-        surface: "#FFFFFF",
-        "on-surface": "#202020",
+        surface: "var(--surface)",
+        "on-surface": "var(--text)",
         error: "#EF4444",
-        border: "#E5E7EB",
-        muted: "#6B7280",
+        border: "var(--border)",
+        muted: "var(--text-dim)",
       },
       borderRadius: {
         sm: "4px",

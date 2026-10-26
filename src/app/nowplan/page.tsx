@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { loadProgress, saveProgress } from "@/lib/nowplan";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 function getISTNow() {
   const now = new Date();
@@ -64,30 +65,33 @@ export default function NowPlanPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
+    <div className="min-h-screen bg-[var(--bg)] overflow-hidden">
       <main className="h-[100dvh] flex flex-col pt-4 pb-[88px] px-4">
         <div className="mx-auto w-full max-w-sm flex flex-col h-full">
-          <header className="shrink-0 mb-3">
-            <h1 className="text-[17px] font-bold tracking-tight text-on-surface leading-tight">Now</h1>
-            <p className="text-[10px] text-muted leading-tight">{t} • IST</p>
+          <header className="shrink-0 mb-3 flex items-center justify-between">
+            <div>
+              <h1 className="text-[17px] font-bold tracking-tight text-[var(--text)] leading-tight">Now</h1>
+              <p className="text-[10px] text-[var(--text-dim)] leading-tight">{t} • IST</p>
+            </div>
+            <ThemeToggle />
           </header>
 
           <div className="shrink-0 mb-4">
-            <p className="text-[11px] text-muted leading-tight">You have to do</p>
-            <p className="text-[18px] font-bold tracking-tight text-on-surface leading-[1.12] mt-0.5">{getTask()}</p>
+            <p className="text-[11px] text-[var(--text-dim)] leading-tight">You have to do</p>
+            <p className="text-[18px] font-bold tracking-tight text-[var(--text)] leading-[1.12] mt-0.5">{getTask()}</p>
           </div>
 
           <div className="shrink-0">
-            <p className="text-[11px] text-muted mb-1.5">Mark chapters done</p>
+            <p className="text-[11px] text-[var(--text-dim)] mb-1.5">Mark chapters done</p>
             <div className="flex flex-col gap-1">
               {subjects.map((s) => (
                 <div key={s} className="flex items-center justify-between py-0.5">
-                  <span className="text-[13px] text-on-surface">{s}</span>
+                  <span className="text-[13px] text-[var(--text)]">{s}</span>
                   <div className="flex items-center gap-1">
-                    <button onClick={() => update(s, progress[s] - 0.5)} className="h-6 w-6 rounded-md border border-border text-[13px] leading-none active:scale-[0.95] transition-transform">-</button>
-                    <span className="w-9 text-center text-[11px] tabular-nums">{progress[s].toFixed(1)}/10</span>
-                    <button onClick={() => update(s, progress[s] + 0.5)} className="h-6 w-6 rounded-md border border-border text-[13px] leading-none active:scale-[0.95] transition-transform">+</button>
-                    <button onClick={() => update(s, progress[s] + 1)} className="h-6 px-1.5 rounded-md border border-border text-[10px] active:scale-[0.95] transition-transform">Done</button>
+                    <button onClick={() => update(s, progress[s] - 0.5)} className="h-6 w-6 rounded-md border border-[var(--border)] text-[13px] leading-none active:scale-[0.95] transition-transform text-[var(--text)]">-</button>
+                    <span className="w-9 text-center text-[11px] tabular-nums text-[var(--text-dim)]">{progress[s].toFixed(1)}/10</span>
+                    <button onClick={() => update(s, progress[s] + 0.5)} className="h-6 w-6 rounded-md border border-[var(--border)] text-[13px] leading-none active:scale-[0.95] transition-transform text-[var(--text)]">+</button>
+                    <button onClick={() => update(s, progress[s] + 1)} className="h-6 px-1.5 rounded-md border border-[var(--border)] text-[10px] active:scale-[0.95] transition-transform text-[var(--text)]">Done</button>
                   </div>
                 </div>
               ))}
@@ -95,8 +99,8 @@ export default function NowPlanPage() {
           </div>
 
           <div className="flex-1 flex items-center justify-center">
-            <div className="border border-gray-200 rounded-lg px-4 py-2 w-full text-center">
-              <p className="text-[18px] font-semibold tracking-tight text-on-surface">{action || "GET READY"}</p>
+            <div className="border border-[var(--border)] rounded-lg px-4 py-2 w-full text-center">
+              <p className="text-[18px] font-semibold tracking-tight text-[var(--text)]">{action || "GET READY"}</p>
             </div>
           </div>
         </div>
