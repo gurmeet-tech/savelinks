@@ -24,7 +24,7 @@ function getAction(h: number, m: number) {
   const total = h + m / 60;
   if (total >= 0 && total < 6) return "SLEEP";
   if (total >= 6 && total < 7) return "REVISION";
-  if (total >= 7 && total < 8) return "GET READY";
+  if (total >= 7 && total < 8) return "";
   if (total >= 8 && total < 15) return "SCHOOL";
   if (total >= 15 && total < 15.75) return "REST";
   if (total >= 15.75 && total < 17.25) return "PHYSICS";
@@ -94,11 +94,13 @@ export default function NowPlanPage() {
             </div>
           </div>
 
-          <div className="flex-1 flex items-center justify-center">
-            <div className="border border-gray-200 rounded-lg px-4 py-2 w-full text-center">
-              <p className="text-[18px] font-semibold tracking-tight text-on-surface">{action}</p>
+          {action && (
+            <div className="flex-1 flex items-center justify-center">
+              <div className="border border-gray-200 rounded-lg px-4 py-2 w-full text-center">
+                <p className="text-[18px] font-semibold tracking-tight text-on-surface">{action}</p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
     </div>
