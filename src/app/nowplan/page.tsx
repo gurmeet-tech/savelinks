@@ -20,6 +20,22 @@ function formatIST12h(date: Date) {
 
 const subjects = ["Physics", "Chemistry", "Math"] as const;
 
+function getTimeBlock(h: number) {
+  if (h >= 0 && h < 6) return "SLEEP";
+  if (h >= 6 && h < 7) return "REVISION";
+  if (h >= 7 && h < 8) return "ROUTINE";
+  if (h >= 8 && h < 15) return "SCHOOL";
+  if (h >= 15 && h < 15.75) return "BREAK";
+  if (h >= 15.75 && h < 17.25) return "PHYSICS";
+  if (h >= 17.25 && h < 17.5) return "BREAK";
+  if (h >= 17.5 && h < 19) return "CHEMISTRY";
+  if (h >= 19 && h < 19.75) return "BREAK";
+  if (h >= 19.75 && h < 21.25) return "MATH";
+  if (h >= 21.25 && h < 21.75) return "PLAN";
+  if (h >= 21.75 && h < 22.5) return "WIND DOWN";
+  return "SLEEP";
+}
+
 export default function NowPlanPage() {
   const [time, setTime] = useState(getISTNow());
   const [progress, setProgress] = useState({ Physics: 0, Chemistry: 0, Math: 0 });
@@ -37,6 +53,7 @@ export default function NowPlanPage() {
   };
 
   const t = formatIST12h(time);
+  const block = getTimeBlock(time.getHours() + time.getMinutes() / 60);
 
   const getTask = () => {
     if (progress.Chemistry < 1) return "Chemistry — Finish Ch 1";
@@ -73,6 +90,12 @@ export default function NowPlanPage() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <div className="border border-gray-200 rounded-lg px-3 py-2">
+              <p className="text-[16px] font-semibold tracking-tight text-on-surface">{block}</p>
             </div>
           </div>
         </div>
