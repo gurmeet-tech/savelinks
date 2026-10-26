@@ -39,6 +39,13 @@ export default function NowPlanPage() {
 
   const t = formatIST12h(time);
 
+  const getTask = () => {
+    if (progress.Chemistry < 1) return "Chemistry — Finish Ch 1";
+    if (progress.Physics < 2) return "Physics — Do next";
+    if (progress.Math < 1) return "Math — Start Ch 1";
+    return "Revise weak topics";
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <main className="pt-6 pb-36 px-4">
@@ -49,10 +56,8 @@ export default function NowPlanPage() {
           </header>
 
           <div className="mb-4">
-            <p className="text-[13px] text-muted">Do this now</p>
-            <p className="text-[16px] font-bold text-on-surface leading-tight mt-1">
-              {progress.Chemistry < 1 ? "Chemistry — Finish Ch 1 (half left)" : progress.Physics < 2 ? "Physics — Next chapter" : progress.Math < 1 ? "Math — Start Ch 1" : "Revise weak topics"}
-            </p>
+            <p className="text-[12px] text-muted leading-tight">You have to do</p>
+            <p className="text-[20px] font-bold tracking-tight text-on-surface leading-tight">{getTask()}</p>
           </div>
 
           <div className="mb-4">
@@ -74,8 +79,7 @@ export default function NowPlanPage() {
 
           <div>
             <p className="text-[13px] text-muted mb-1">Next</p>
-            <p className="text-[14px] text-on-surface">Study — Chemistry</p>
-            <p className="text-[12px] text-muted">Break later as per routine</p>
+            <p className="text-[14px] text-on-surface">Study — {progress.Chemistry < 1 ? "Chemistry" : progress.Physics < 2 ? "Physics" : "Math"}</p>
           </div>
         </div>
       </main>

@@ -9,7 +9,6 @@ import { loadVideos, saveVideos } from "@/lib/storage";
 import { VideoLink } from "@/types/video";
 import { HeartIcon, PlayCircleIcon, DeleteIcon, PlusSquareIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { TextMorph } from "@/components/ui/text-morph";
 import { useToast } from "@/components/ui/toast";
 import { Copy, Pencil, Search, ArrowUpDown } from "lucide-react";
 
@@ -138,7 +137,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-6 sm:mb-8 animate-fade-slide-up">
             <h1 className="text-[20px] sm:text-[22px] font-medium leading-[1.15] tracking-[-0.015em] text-on-surface">
-              <TextMorph texts={["Video Saver", "PrepVault", "Save Your Links"]} />
+              Video Saver
             </h1>
             <p className="mt-1 text-[13px] sm:text-[14px] text-muted">
               Save important videos for your Class 12th prep
@@ -220,7 +219,7 @@ export default function HomePage() {
 
           <div className="mb-4 animate-fade-slide-up" style={{ animationDelay: "160ms" }}>
             <h2 className="text-[17px] sm:text-[19px] font-medium leading-[1.2] text-on-surface">
-              <TextMorph texts={["Saved Video Links", "Your Collection", "Prep Links"]} />
+              Saved Video Links
             </h2>
             <p className="text-[13px] sm:text-[14px] text-muted mt-1">
               {filtered.length} {filtered.length === 1 ? "video" : "videos"}
@@ -292,61 +291,6 @@ export default function HomePage() {
           )}
         </div>
       </main>
-
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-          <div className="absolute inset-0 bg-black/20 animate-fade-slide-up" onClick={() => setShowModal(false)} />
-          <Card className="relative w-full max-w-md p-5 sm:p-6 bg-surface shadow-lg max-h-[90vh] overflow-y-auto animate-scale-in">
-            <h2 className="text-[18px] sm:text-[20px] font-medium mb-4">{editingId ? "Edit Video" : "Add Video Link"}</h2>
-            <div className="space-y-3">
-              <div>
-                <label className="text-[12px] font-medium text-on-surface mb-1 block">Heading *</label>
-                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter video heading" />
-              </div>
-              <div>
-                <label className="text-[12px] font-medium text-on-surface mb-1 block">Video Link *</label>
-                <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://..." />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <div>
-                  <label className="text-[12px] font-medium text-on-surface mb-1 block">Subject</label>
-                  <Input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="e.g., Physics" />
-                </div>
-                <div>
-                  <label className="text-[12px] font-medium text-on-surface mb-1 block">Chapter</label>
-                  <Input value={chapter} onChange={(e) => setChapter(e.target.value)} placeholder="e.g., Unit 1" />
-                </div>
-              </div>
-              <div>
-                <label className="text-[12px] font-medium text-on-surface mb-1 block">Notes</label>
-                <Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Optional notes" />
-              </div>
-            </div>
-            <div className="flex items-center gap-2 mt-6">
-              <Button variant="primary" onClick={handleSave} className="flex-1">
-                {editingId ? "Update" : "Save"}
-              </Button>
-              <Button variant="secondary" onClick={() => setShowModal(false)} className="flex-1">
-                Cancel
-              </Button>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {deleteId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-          <div className="absolute inset-0 bg-black/20 animate-fade-slide-up" onClick={() => setDeleteId(null)} />
-          <Card className="relative w-full max-w-sm p-5 bg-surface shadow-lg animate-scale-in">
-            <h2 className="text-[18px] font-medium mb-2">Delete this video?</h2>
-            <p className="text-[13px] text-muted">This action cannot be undone.</p>
-            <div className="flex items-center gap-2 mt-5">
-              <button onClick={confirmDelete} className="flex-1 h-9 rounded-lg text-[14px] font-medium text-surface bg-[linear-gradient(180deg,#EF4444_0%,#DC2626_100%)] border border-[#B91C1C]">Delete</button>
-              <Button variant="secondary" onClick={() => setDeleteId(null)} className="flex-1">Cancel</Button>
-            </div>
-          </Card>
-        </div>
-      )}
     </div>
   );
 }
