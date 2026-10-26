@@ -47,38 +47,33 @@ export default function NowPlanPage() {
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
-      <main className="h-[100dvh] flex flex-col pt-3 pb-[88px] px-4">
+      <main className="h-[100dvh] flex flex-col pt-4 pb-[88px] px-4">
         <div className="mx-auto w-full max-w-sm flex flex-col h-full">
-          <header className="shrink-0 mb-2">
-            <h1 className="text-[17px] sm:text-[18px] font-bold tracking-tight text-on-surface leading-tight">Now</h1>
-            <p className="text-[10px] sm:text-[11px] text-muted leading-tight">{t} • IST</p>
+          <header className="shrink-0 mb-3">
+            <h1 className="text-[17px] font-bold tracking-tight text-on-surface leading-tight">Now</h1>
+            <p className="text-[10px] text-muted leading-tight">{t} • IST</p>
           </header>
 
-          <div className="shrink-0 mb-2">
-            <p className="text-[10px] sm:text-[11px] text-muted leading-tight">You have to do</p>
-            <p className="text-[18px] sm:text-[19px] font-bold tracking-tight text-on-surface leading-[1.1] mt-0.5">{getTask()}</p>
+          <div className="shrink-0 mb-4">
+            <p className="text-[11px] text-muted leading-tight">You have to do</p>
+            <p className="text-[18px] font-bold tracking-tight text-on-surface leading-[1.12] mt-0.5">{getTask()}</p>
           </div>
 
-          <div className="flex-1 flex flex-col justify-center min-h-0">
-            <p className="text-[11px] sm:text-[12px] text-muted mb-1">Mark chapters done</p>
-            <div className="flex flex-col gap-0.5">
+          <div className="shrink-0">
+            <p className="text-[11px] text-muted mb-1.5">Mark chapters done</p>
+            <div className="flex flex-col gap-1">
               {subjects.map((s) => (
                 <div key={s} className="flex items-center justify-between py-0.5">
-                  <span className="text-[13px] sm:text-[14px] text-on-surface">{s}</span>
+                  <span className="text-[13px] text-on-surface">{s}</span>
                   <div className="flex items-center gap-1">
                     <button onClick={() => update(s, progress[s] - 0.5)} className="h-6 w-6 rounded-md border border-border text-[13px] leading-none active:scale-[0.95] transition-transform">-</button>
-                    <span className="w-9 text-center text-[11px] sm:text-[12px] tabular-nums">{progress[s].toFixed(1)}/10</span>
+                    <span className="w-9 text-center text-[11px] tabular-nums">{progress[s].toFixed(1)}/10</span>
                     <button onClick={() => update(s, progress[s] + 0.5)} className="h-6 w-6 rounded-md border border-border text-[13px] leading-none active:scale-[0.95] transition-transform">+</button>
-                    <button onClick={() => update(s, progress[s] + 1)} className="h-6 px-1.5 rounded-md border border-border text-[10px] sm:text-[11px] active:scale-[0.95] transition-transform">Done</button>
+                    <button onClick={() => update(s, progress[s] + 1)} className="h-6 px-1.5 rounded-md border border-border text-[10px] active:scale-[0.95] transition-transform">Done</button>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className="shrink-0 pt-2">
-            <p className="text-[11px] sm:text-[12px] text-muted mb-0.5 leading-tight">Next</p>
-            <p className="text-[13px] sm:text-[14px] text-on-surface leading-tight">Study — {progress.Chemistry < 1 ? "Chemistry" : progress.Physics < 2 ? "Physics" : "Math"}</p>
           </div>
         </div>
       </main>
