@@ -20,19 +20,20 @@ function formatIST12h(date: Date) {
 
 const subjects = ["Physics", "Chemistry", "Math"] as const;
 
-function getAction(h: number) {
-  if (h >= 0 && h < 6) return "SLEEP";
-  if (h >= 6 && h < 7) return "REVISE FORMULAS";
-  if (h >= 7 && h < 8) return "GET READY";
-  if (h >= 8 && h < 15) return "SCHOOL";
-  if (h >= 15 && h < 15.75) return "LUNCH + REST";
-  if (h >= 15.75 && h < 17.25) return "PHYSICS";
-  if (h >= 17.25 && h < 17.5) return "BREAK";
-  if (h >= 17.5 && h < 19) return "CHEMISTRY";
-  if (h >= 19 && h < 19.75) return "DINNER + WALK";
-  if (h >= 19.75 && h < 21.25) return "MATH";
-  if (h >= 21.25 && h < 21.75) return "LOG MISTAKES";
-  if (h >= 21.75 && h < 22.5) return "WIND DOWN";
+function getAction(h: number, m: number) {
+  const total = h + m / 60;
+  if (total >= 0 && total < 6) return "SLEEP";
+  if (total >= 6 && total < 7) return "REVISE FORMULAS";
+  if (total >= 7 && total < 8) return "GET READY + TRAVEL";
+  if (total >= 8 && total < 15) return "SCHOOL";
+  if (total >= 15 && total < 15.75) return "LUNCH + REST";
+  if (total >= 15.75 && total < 17.25) return "PHYSICS";
+  if (total >= 17.25 && total < 17.5) return "BREAK";
+  if (total >= 17.5 && total < 19) return "CHEMISTRY";
+  if (total >= 19 && total < 19.75) return "DINNER + WALK";
+  if (total >= 19.75 && total < 21.25) return "MATH";
+  if (total >= 21.25 && total < 21.75) return "LOG MISTAKES";
+  if (total >= 21.75 && total < 22.5) return "WIND DOWN";
   return "SLEEP";
 }
 
@@ -53,7 +54,7 @@ export default function NowPlanPage() {
   };
 
   const t = formatIST12h(time);
-  const action = getAction(time.getHours() + time.getMinutes() / 60);
+  const action = getAction(time.getHours(), time.getMinutes());
 
   const getTask = () => {
     if (progress.Chemistry < 1) return "Chemistry — Finish Ch 1";
