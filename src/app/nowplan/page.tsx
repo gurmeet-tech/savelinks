@@ -20,18 +20,18 @@ function formatIST12h(date: Date) {
 
 const subjects = ["Physics", "Chemistry", "Math"] as const;
 
-function getTimeBlock(h: number) {
+function getAction(h: number) {
   if (h >= 0 && h < 6) return "SLEEP";
-  if (h >= 6 && h < 7) return "REVISION";
-  if (h >= 7 && h < 8) return "ROUTINE";
+  if (h >= 6 && h < 7) return "REVISE FORMULAS";
+  if (h >= 7 && h < 8) return "GET READY";
   if (h >= 8 && h < 15) return "SCHOOL";
-  if (h >= 15 && h < 15.75) return "BREAK";
+  if (h >= 15 && h < 15.75) return "LUNCH + REST";
   if (h >= 15.75 && h < 17.25) return "PHYSICS";
   if (h >= 17.25 && h < 17.5) return "BREAK";
   if (h >= 17.5 && h < 19) return "CHEMISTRY";
-  if (h >= 19 && h < 19.75) return "BREAK";
+  if (h >= 19 && h < 19.75) return "DINNER + WALK";
   if (h >= 19.75 && h < 21.25) return "MATH";
-  if (h >= 21.25 && h < 21.75) return "PLAN";
+  if (h >= 21.25 && h < 21.75) return "LOG MISTAKES";
   if (h >= 21.75 && h < 22.5) return "WIND DOWN";
   return "SLEEP";
 }
@@ -53,7 +53,7 @@ export default function NowPlanPage() {
   };
 
   const t = formatIST12h(time);
-  const block = getTimeBlock(time.getHours() + time.getMinutes() / 60);
+  const action = getAction(time.getHours() + time.getMinutes() / 60);
 
   const getTask = () => {
     if (progress.Chemistry < 1) return "Chemistry — Finish Ch 1";
@@ -93,9 +93,9 @@ export default function NowPlanPage() {
             </div>
           </div>
 
-          <div className="mt-4">
-            <div className="border border-gray-200 rounded-lg px-3 py-2">
-              <p className="text-[16px] font-semibold tracking-tight text-on-surface">{block}</p>
+          <div className="flex-1 flex items-center justify-center">
+            <div className="border border-gray-200 rounded-lg px-4 py-2 w-full text-center">
+              <p className="text-[18px] font-semibold tracking-tight text-on-surface">{action}</p>
             </div>
           </div>
         </div>
