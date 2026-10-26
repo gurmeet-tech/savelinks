@@ -18,6 +18,16 @@ function getDaysFrom(start: Date, now: Date) {
   return diff;
 }
 
+function formatIST12h(date: Date) {
+  let h = date.getHours();
+  const m = date.getMinutes().toString().padStart(2, "0");
+  const s = date.getSeconds().toString().padStart(2, "0");
+  const ampm = h >= 12 ? "PM" : "AM";
+  h = h % 12;
+  if (h === 0) h = 12;
+  return `${h}:${m}:${s} ${ampm}`;
+}
+
 export default function NowPlanPage() {
   const [time, setTime] = useState(getISTNow());
 
@@ -26,24 +36,19 @@ export default function NowPlanPage() {
     return () => clearInterval(id);
   }, []);
 
-  const hours = time.getHours().toString().padStart(2, "0");
-  const mins = time.getMinutes().toString().padStart(2, "0");
-  const secs = time.getSeconds().toString().padStart(2, "0");
-
   const start = new Date("2026-10-25T00:00:00+05:30");
   const days = Math.max(0, getDaysFrom(start, time));
   const dayNum = days + 1;
 
-  const physicsDone = 1; // completed 1st chapter
-  const chemDone = 0.5; // half of 2nd? say 1.5 chapters equivalent
-  const mathDone = 0;
+  const physicsDone = 1;
+  const chemDone = 0.5;
 
   const physChap = Math.floor(physicsDone) + 1;
   const chemChap = Math.floor(chemDone) + 1;
-  const mathChap = Math.floor(mathDone) + 1;
-
   const physStep = physicsDone % 1 === 0 ? 1 : 2;
   const chemStep = chemDone % 1 === 0 ? 1 : 2;
+
+  const t = formatIST12h(time);
 
   return (
     <div className="min-h-screen bg-white">
@@ -54,7 +59,7 @@ export default function NowPlanPage() {
               <TextMorph texts={["NowPlan", "Focus Now", "Plan Your Day"]} />
             </h1>
             <p className="mt-1 text-[13px] sm:text-[14px] text-muted">
-              IST • {hours}:{mins}:{secs} • Day {dayNum} of 83
+              IST • {t} • Day {dayNum} of 83
             </p>
           </div>
 
@@ -64,13 +69,9 @@ export default function NowPlanPage() {
               <span className="text-[11px] uppercase tracking-wide text-muted">NOW - IST</span>
               <span className="text-[11px] text-muted">Pass 1 • Started Oct 25</span>
             </div>
-            <h2 className="text-[28px] font-semibold leading-[1.2] text-on-surface">Continue</h2>
-            <p className="text-[14px] text-muted mt-1">Based on your progress</p>
-            <div className="mt-4 flex items-baseline gap-2">
-              <span className="text-[42px] sm:text-[52px] font-bold tabular-nums leading-none text-on-surface">{hours}:{mins}</span>
-              <span className="text-[20px] font-semibold tabular-nums text-muted">:{secs}</span>
-            </div>
-            <p className="text-[13px] text-muted mt-1">Current IST time</p>
+            <h2 className="text-[28px] font-semibold leading-[1.2] text-on-surface">Indian Standard Time</h2>
+            <p className="text-[14px] text-muted mt-1">12-hour format</p>
+            <div className="mt-4 text-[42px] sm:text-[52px] font-bold tabular-nums leading-none text-on-surface">{t}</div>
           </Card>
 
           <Card className="mb-4 bg-neutral border-border animate-fade-slide-up" style={{ animationDelay: "140ms" }}>
