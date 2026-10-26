@@ -1,122 +1,82 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { TextMorph } from "@/components/ui/text-morph";
 import { useEffect, useState } from "react";
-import { Clock, BookOpen, Target } from "lucide-react";
+import { loadProgress, saveProgress } from "@/lib/nowplan";
+import { cn } from "@/lib/utils";
 
 function getISTNow() {
   const now = new Date();
   const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-  const ist = new Date(utc + 5.5 * 3600000);
-  return ist;
-}
-
-function getDaysFrom(start: Date, now: Date) {
-  const s = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-  const n = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const diff = Math.floor((n.getTime() - s.getTime()) / (1000 * 60 * 60 * 24));
-  return diff;
+  return new Date(utc + 5.5 * 3600000);
 }
 
 function formatIST12h(date: Date) {
   let h = date.getHours();
   const m = date.getMinutes().toString().padStart(2, "0");
-  const s = date.getSeconds().toString().padStart(2, "0");
   const ampm = h >= 12 ? "PM" : "AM";
   h = h % 12;
   if (h === 0) h = 12;
-  return `${h}:${m}:${s} ${ampm}`;
+  return `${h}:${m} ${ampm}`;
 }
+
+const subjects = ["Physics", "Chemistry", "Math"] as const;
 
 export default function NowPlanPage() {
   const [time, setTime] = useState(getISTNow());
+  const [progress, setProgress] = useState({ Physics: 0, Chemistry: 0, Math: 0 });
 
   useEffect(() => {
     const id = setInterval(() => setTime(getISTNow()), 1000);
+    setProgress(loadProgress());
     return () => clearInterval(id);
   }, []);
 
-  const start = new Date("2026-10-25T00:00:00+05:30");
-  const days = Math.max(0, getDaysFrom(start, time));
-  const dayNum = days + 1;
-
-  const physicsDone = 1;
-  const chemDone = 0.5;
-
-  const physChap = Math.floor(physicsDone) + 1;
-  const chemChap = Math.floor(chemDone) + 1;
-  const physStep = physicsDone % 1 === 0 ? 1 : 2;
-  const chemStep = chemDone % 1 === 0 ? 1 : 2;
+  const update = (subj: keyof typeof progress, val: number) => {
+    const next = { ...progress, [subj]: Math.max(0, Math.min(10, val)) };
+    setProgress(next);
+    saveProgress(next);
+  };
 
   const t = formatIST12h(time);
 
   return (
     <div className="min-h-screen bg-white">
-      <main className="pt-6 sm:pt-10 pb-36 px-4 sm:px-6">
-        <div className="mx-auto max-w-md">
-          <div className="mb-6 animate-fade-slide-up">
-            <h1 className="text-[20px] sm:text-[22px] font-medium leading-[1.15] tracking-[-0.015em] text-on-surface">
-              <TextMorph texts={["NowPlan", "Focus Now", "Your Plan"]} />
-            </h1>
-            <p className="mt-1 text-[13px] sm:text-[14px] text-muted">
-              Track your JEE prep • Day {dayNum} of 83
+      <main className="pt-6 pb-36 px-4">
+        <div className="mx-auto max-w-sm">
+          <header className="mb-4">
+            <h1 className="text-[18px] font-bold tracking-tight text-on-surface">Now</h1>
+            <p className="text-[12px] text-muted">{t} • IST</p>
+          </header>
+
+          <div className="mb-4">
+            <p className="text-[13px] text-muted">Do this now</p>
+            <p className="text-[16px] font-bold text-on-surface leading-tight mt-1">
+              {progress.Chemistry < 1 ? "Chemistry — Finish Ch 1 (half left)" : progress.Physics < 2 ? "Physics — Next chapter" : progress.Math < 1 ? "Math — Start Ch 1" : "Revise weak topics"}
             </p>
           </div>
 
-          <Card className="mb-4 bg-neutral border-border hover-lift animate-fade-slide-up" style={{ animationDelay: "80ms" }}>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-primary" />
-                <span className="text-[14px] font-medium text-on-surface">Current Time (IST)</span>
-              </div>
-              <span className="text-[11px] px-2 py-0.5 rounded-full bg-surface border border-border text-muted">Live</span>
-            </div>
-            <div className="text-[38px] sm:text-[48px] font-semibold tabular-nums leading-none text-on-surface">{t}</div>
-          </Card>
-
-          <Card className="mb-4 bg-neutral border-border animate-fade-slide-up" style={{ animationDelay: "140ms" }}>
-            <div className="flex items-center gap-2 mb-3">
-              <BookOpen className="h-4 w-4 text-primary" />
-              <span className="text-[14px] font-medium text-on-surface">Your Progress</span>
-            </div>
-            <div className="flex flex-col gap-2.5">
-              <div className="flex items-center justify-between p-2 rounded-lg bg-surface border border-border">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full" style={{ background: "#4C9AFF" }} />
-                  <span className="text-[13px] font-medium text-on-surface">Physics</span>
+          <div className="mb-4">
+            <p className="text-[13px] text-muted mb-2">Mark chapters done</p>
+            <div className="flex flex-col gap-2">
+              {subjects.map((s) => (
+                <div key={s} className="flex items-center justify-between py-1.5">
+                  <span className="text-[14px] text-on-surface">{s}</span>
+                  <div className="flex items-center gap-1.5">
+                    <button onClick={() => update(s, progress[s] - 0.5)} className="h-7 w-7 rounded-md border border-border text-[14px] leading-none">-</button>
+                    <span className="w-10 text-center text-[13px] tabular-nums">{progress[s].toFixed(1)}/10</span>
+                    <button onClick={() => update(s, progress[s] + 0.5)} className="h-7 w-7 rounded-md border border-border text-[14px] leading-none">+</button>
+                    <button onClick={() => update(s, progress[s] + 1)} className="h-7 px-2 rounded-md border border-border text-[12px]">Done</button>
+                  </div>
                 </div>
-                <span className="text-[12px] text-muted">Ch {physChap} • Step {physStep} • 1/10</span>
-              </div>
-              <div className="flex items-center justify-between p-2 rounded-lg bg-surface border border-border">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full" style={{ background: "#3DDC97" }} />
-                  <span className="text-[13px] font-medium text-on-surface">Chemistry</span>
-                </div>
-                <span className="text-[12px] text-muted">Ch {chemChap} • Step {chemStep} • 0.5/10</span>
-              </div>
-              <div className="flex items-center justify-between p-2 rounded-lg bg-surface border border-border">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full" style={{ background: "#FFB547" }} />
-                  <span className="text-[13px] font-medium text-on-surface">Math</span>
-                </div>
-                <span className="text-[12px] text-muted">Ch 1 • Step 1 • 0/10</span>
-              </div>
+              ))}
             </div>
-          </Card>
+          </div>
 
-          <Card className="mb-4 bg-neutral border-border animate-fade-slide-up" style={{ animationDelay: "180ms" }}>
-            <div className="flex items-center gap-2 mb-2">
-              <Target className="h-4 w-4 text-primary" />
-              <span className="text-[14px] font-medium text-on-surface">Next Up</span>
-            </div>
-            <p className="text-[15px] text-on-surface">Finish Chemistry Ch {chemChap} - Step 2 (Practice)</p>
-            <p className="text-[13px] text-muted mt-1">Complete the remaining half of Chemistry</p>
-          </Card>
-
-          <Card className="bg-neutral border-border animate-fade-slide-up" style={{ animationDelay: "220ms" }}>
-            <p className="text-[13px] text-on-surface leading-relaxed">Do Chemistry next. You did 1 full Physics chapter - good start. Focus on completing Chem Ch 1 today.</p>
-          </Card>
+          <div>
+            <p className="text-[13px] text-muted mb-1">Next</p>
+            <p className="text-[14px] text-on-surface">Study — Chemistry</p>
+            <p className="text-[12px] text-muted">Break later as per routine</p>
+          </div>
         </div>
       </main>
     </div>
