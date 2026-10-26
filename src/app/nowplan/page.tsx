@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { loadProgress, saveProgress } from "@/lib/nowplan";
-import { cn } from "@/lib/utils";
 
 function getISTNow() {
   const now = new Date();
@@ -47,39 +46,39 @@ export default function NowPlanPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <main className="pt-6 pb-36 px-4">
-        <div className="mx-auto max-w-sm">
-          <header className="mb-4">
+    <div className="min-h-screen bg-white overflow-hidden">
+      <main className="h-screen flex flex-col pt-4 pb-24 px-4">
+        <div className="mx-auto w-full max-w-sm flex flex-col h-full">
+          <header className="mb-3">
             <h1 className="text-[18px] font-bold tracking-tight text-on-surface">Now</h1>
-            <p className="text-[12px] text-muted">{t} • IST</p>
+            <p className="text-[11px] text-muted">{t} • IST</p>
           </header>
 
-          <div className="mb-4">
-            <p className="text-[12px] text-muted leading-tight">You have to do</p>
-            <p className="text-[20px] font-bold tracking-tight text-on-surface leading-tight">{getTask()}</p>
+          <div className="mb-3">
+            <p className="text-[11px] text-muted leading-tight">You have to do</p>
+            <p className="text-[19px] font-bold tracking-tight text-on-surface leading-tight">{getTask()}</p>
           </div>
 
-          <div className="mb-4">
-            <p className="text-[13px] text-muted mb-2">Mark chapters done</p>
-            <div className="flex flex-col gap-2">
+          <div className="flex-1 min-h-0">
+            <p className="text-[12px] text-muted mb-1.5">Mark chapters done</p>
+            <div className="flex flex-col gap-1">
               {subjects.map((s) => (
-                <div key={s} className="flex items-center justify-between py-1.5">
-                  <span className="text-[14px] text-on-surface">{s}</span>
-                  <div className="flex items-center gap-1.5">
-                    <button onClick={() => update(s, progress[s] - 0.5)} className="h-7 w-7 rounded-md border border-border text-[14px] leading-none">-</button>
-                    <span className="w-10 text-center text-[13px] tabular-nums">{progress[s].toFixed(1)}/10</span>
-                    <button onClick={() => update(s, progress[s] + 0.5)} className="h-7 w-7 rounded-md border border-border text-[14px] leading-none">+</button>
-                    <button onClick={() => update(s, progress[s] + 1)} className="h-7 px-2 rounded-md border border-border text-[12px]">Done</button>
+                <div key={s} className="flex items-center justify-between py-1">
+                  <span className="text-[13px] text-on-surface">{s}</span>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => update(s, progress[s] - 0.5)} className="h-6 w-6 rounded-md border border-border text-[13px] leading-none">-</button>
+                    <span className="w-9 text-center text-[12px] tabular-nums">{progress[s].toFixed(1)}/10</span>
+                    <button onClick={() => update(s, progress[s] + 0.5)} className="h-6 w-6 rounded-md border border-border text-[13px] leading-none">+</button>
+                    <button onClick={() => update(s, progress[s] + 1)} className="h-6 px-1.5 rounded-md border border-border text-[11px]">Done</button>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div>
-            <p className="text-[13px] text-muted mb-1">Next</p>
-            <p className="text-[14px] text-on-surface">Study — {progress.Chemistry < 1 ? "Chemistry" : progress.Physics < 2 ? "Physics" : "Math"}</p>
+          <div className="mt-auto">
+            <p className="text-[12px] text-muted mb-0.5">Next</p>
+            <p className="text-[13px] text-on-surface">Study — {progress.Chemistry < 1 ? "Chemistry" : progress.Physics < 2 ? "Physics" : "Math"}</p>
           </div>
         </div>
       </main>
