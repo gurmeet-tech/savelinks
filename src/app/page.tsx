@@ -134,7 +134,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <Navbar onAddClick={openAdd} />
-      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
+      <main className="pt-20 sm:pt-24 pb-32 px-4 sm:px-6">
         <div className="mx-auto max-w-6xl">
           <div className="mb-6 sm:mb-8 animate-fade-slide-up">
             <h1 className="text-[20px] sm:text-[22px] font-medium leading-[1.15] tracking-[-0.015em] text-on-surface">

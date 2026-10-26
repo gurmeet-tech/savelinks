@@ -194,3 +194,4 @@ Navigation pills and category filters should behave like chips: compact, rounded
 - Don't increase type weight aggressively; rely on size and spacing for hierarchy.
 - Don't clutter cards with extra chrome when the imagery already carries the composition.
 
+
