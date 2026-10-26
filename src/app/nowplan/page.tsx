@@ -3,6 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { TextMorph } from "@/components/ui/text-morph";
 import { useEffect, useState } from "react";
+import { Clock, BookOpen, Target } from "lucide-react";
 
 function getISTNow() {
   const now = new Date();
@@ -52,64 +53,69 @@ export default function NowPlanPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <main className="pt-6 sm:pt-10 pb-32 px-4 sm:px-6">
+      <main className="pt-6 sm:pt-10 pb-36 px-4 sm:px-6">
         <div className="mx-auto max-w-md">
           <div className="mb-6 animate-fade-slide-up">
             <h1 className="text-[20px] sm:text-[22px] font-medium leading-[1.15] tracking-[-0.015em] text-on-surface">
-              <TextMorph texts={["NowPlan", "Focus Now", "Plan Your Day"]} />
+              <TextMorph texts={["NowPlan", "Focus Now", "Your Plan"]} />
             </h1>
             <p className="mt-1 text-[13px] sm:text-[14px] text-muted">
-              IST • {t} • Day {dayNum} of 83
+              Track your JEE prep • Day {dayNum} of 83
             </p>
           </div>
 
           <Card className="mb-4 bg-neutral border-border hover-lift animate-fade-slide-up" style={{ animationDelay: "80ms" }}>
-            <div className="h-[6px] w-full rounded-t-md -mt-[16px] mx-[-16px] mb-3" style={{ background: "linear-gradient(90deg, #4C9AFF 0%, #3DDC97 50%, #FFB547 100%)" }} />
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] uppercase tracking-wide text-muted">NOW - IST</span>
-              <span className="text-[11px] text-muted">Pass 1 • Started Oct 25</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-primary" />
+                <span className="text-[14px] font-medium text-on-surface">Current Time (IST)</span>
+              </div>
+              <span className="text-[11px] px-2 py-0.5 rounded-full bg-surface border border-border text-muted">Live</span>
             </div>
-            <h2 className="text-[28px] font-semibold leading-[1.2] text-on-surface">Indian Standard Time</h2>
-            <p className="text-[14px] text-muted mt-1">12-hour format</p>
-            <div className="mt-4 text-[42px] sm:text-[52px] font-bold tabular-nums leading-none text-on-surface">{t}</div>
+            <div className="text-[38px] sm:text-[48px] font-semibold tabular-nums leading-none text-on-surface">{t}</div>
           </Card>
 
           <Card className="mb-4 bg-neutral border-border animate-fade-slide-up" style={{ animationDelay: "140ms" }}>
-            <p className="text-[12px] uppercase tracking-wide text-muted mb-3">Your Progress</p>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 mb-3">
+              <BookOpen className="h-4 w-4 text-primary" />
+              <span className="text-[14px] font-medium text-on-surface">Your Progress</span>
+            </div>
+            <div className="flex flex-col gap-2.5">
+              <div className="flex items-center justify-between p-2 rounded-lg bg-surface border border-border">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full" style={{ background: "#4C9AFF" }} />
-                  <span className="text-[14px] text-on-surface">Physics</span>
+                  <span className="text-[13px] font-medium text-on-surface">Physics</span>
                 </div>
-                <span className="text-[12px] text-muted">Ch {physChap} • Step {physStep} • Done 1/10</span>
+                <span className="text-[12px] text-muted">Ch {physChap} • Step {physStep} • 1/10</span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between p-2 rounded-lg bg-surface border border-border">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full" style={{ background: "#3DDC97" }} />
-                  <span className="text-[14px] text-on-surface">Chemistry</span>
+                  <span className="text-[13px] font-medium text-on-surface">Chemistry</span>
                 </div>
-                <span className="text-[12px] text-muted">Ch {chemChap} • Step {chemStep} • Done 0.5/10</span>
+                <span className="text-[12px] text-muted">Ch {chemChap} • Step {chemStep} • 0.5/10</span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between p-2 rounded-lg bg-surface border border-border">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full" style={{ background: "#FFB547" }} />
-                  <span className="text-[14px] text-on-surface">Math</span>
+                  <span className="text-[13px] font-medium text-on-surface">Math</span>
                 </div>
-                <span className="text-[12px] text-muted">Ch 1 • Step 1 • Done 0/10</span>
+                <span className="text-[12px] text-muted">Ch 1 • Step 1 • 0/10</span>
               </div>
             </div>
           </Card>
 
           <Card className="mb-4 bg-neutral border-border animate-fade-slide-up" style={{ animationDelay: "180ms" }}>
-            <p className="text-[12px] uppercase tracking-wide text-muted mb-2">Next Up</p>
-            <p className="text-[15px] font-medium text-on-surface">Finish Chemistry Ch {chemChap} - Step 2 (Practice)</p>
-            <p className="text-[13px] text-muted mt-1">Continue where you left off - complete the remaining half</p>
+            <div className="flex items-center gap-2 mb-2">
+              <Target className="h-4 w-4 text-primary" />
+              <span className="text-[14px] font-medium text-on-surface">Next Up</span>
+            </div>
+            <p className="text-[15px] text-on-surface">Finish Chemistry Ch {chemChap} - Step 2 (Practice)</p>
+            <p className="text-[13px] text-muted mt-1">Complete the remaining half of Chemistry</p>
           </Card>
 
           <Card className="bg-neutral border-border animate-fade-slide-up" style={{ animationDelay: "220ms" }}>
-            <p className="text-[12px] uppercase tracking-wide text-muted mb-2">Advice</p>
-            <p className="text-[14px] text-on-surface">Do Chemistry next. You did 1 full Physics chapter - good start. Focus on completing Chem Ch 1 today.</p>
+            <p className="text-[13px] text-on-surface leading-relaxed">Do Chemistry next. You did 1 full Physics chapter - good start. Focus on completing Chem Ch 1 today.</p>
           </Card>
         </div>
       </main>
